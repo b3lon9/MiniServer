@@ -1,0 +1,41 @@
+1.
+[웹 브라우저]가 서버에 요청 하면,
+
+[내장 톰켓서버]가 해당 URL을 받는다,
+
+[내장 톰켓 서버]는 해당 URL을 [스프링 컨테이너]에 전달하고, 
+
+[스프링 컨테이너]는 URL을 파헤친다.
+파헤친 URL에 Mapping되는 함수를 찾고,
+    -- 찾으면
+    Mapping된(GetMapping, PostMapping) 함수를 실행시키고,
+    return한 값을 반환한다.
+
+    -- 못찾으면 
+    static/index.html을 표출한다.
+
+반환된 값을 다시 처음 요청했던 [웹 브라우저]에게 전달한다.
+
+
+2. 타임리프
+매핑 함수에서 Model타입의 파라메터 값을 만들고.
+    @GetMapping("hello")
+    public String hello(Model model) {
+
+    }
+
+    파라메터로 받은 model안에 데이터를 넣는다.
+    그 데이터는 반환할 html에 적용된다.
+
+    model.addAttribute("data", "hello every one!!!");
+    'data'란 이름의 변수가 있다면 그 안에 'hello every one!!!'을 넣으라는 뜻
+    즉, key & value 방식
+
+html에서는 [타임리프]를 사용하려면
+html태그 안에 <html xmlns:th="http://www.thymeleaf.org"> 이렇게 선언한다.
+그리고 해당 html태그 내부에서 사용하는데 사용하는 방법은
+<body>
+    <p th:text="'안녕하세요. ' + ${data} + '입니다.'">안녕하세요. 손님</p>
+</body>
+
+'${data}'방식으로 이전 model에 key & value를 넣었던 'data'변수의 값이 표출될 것이다.
