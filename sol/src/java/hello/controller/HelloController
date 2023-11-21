@@ -6,4 +6,46 @@ public class HelloController {
         model.addAttribute("data", "hello..");
         return "hello";     // hello는 templates hello
     }
+
+    // localhost:8080/hello-mvc?name=neander
+    @GetMapping("hello-mvc")
+    public String helloMvc(@RequestParam("name") String name, Model model) {
+        model.addAtrribute("name", name);
+        return "hello-template";
+    }
+
+    // localhost:8080/hello-string?name=neander
+    @GetMapping("hello-string")
+    @ResponseBody
+    public String helloString(@RequestParam("name") String name) {
+        return "hello" + name;
+    }
+
+    // http://192.1.40.86:8033/hello-api?name=neander-test
+    /**
+     * key-value구조
+     * {"name": "neander-test"}
+     */
+    @GetMapping("hello-api")
+    @ResponseBody
+    public Hello helloAPI(@RequestParam("name") String name) {
+        Hello hello = new Hello();
+        hello.setName(name);
+        return hello;
+    }
+
+
+
+    // 객체로 반환하고 싶은 경우
+    static class Hello {
+        private String name;
+        
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
 }

@@ -1,0 +1,37 @@
+
+Model, View, Controller (MVC)패턴으로 분리하여 개발한다.
+    View : 화면 - (static, templates)
+    Controller : 비즈니스 로직, 서버 뒷단 일
+
+1. MVC Template Engine
+    [웹 브라우저]에서 [SpringBoot]에 URL 요청
+    [내장 톰켓 서버]가 해당 URL을 받고,
+
+    URL은 [스프링 컨테이너]의 @Controller로 등록된 HelloController의 Mapping값을 확인
+    그리고 URL에 알맞는 Mapping값을 찾게 되면,
+
+    Mapping된 함수를 실행하고, 함수 내부에서 비즈니스 로직이 실행되고, return하면서
+    [viewResolver]가 해당 View를 찾아서 모델 값을 Thymeleaf템플릿 엔진이 Rendering되고
+    변환된 값을 다시 [웹 브라우저]로 전달한다.
+
+
+@ResponseBody
+    일반 템플릿을 보여주는 것은 [viewResolver]가 일을 하지만,
+    ResponseBody는 [HttpMessageConverter]가 작업을 한다.
+    각 형식에 맞게 String이면 [StringHttpMessageConverter]가 작동되어 string으로 처리된다.
+
+2. 문자로 데이터 받기
+    Body데이터를 직접 받는 것이기 때문에 html, 즉, View가 따로 필요하지 않다.
+    실행 후 바로 클라이언트에게 값이 전달된다.
+
+    return "something" + name;
+
+
+3. 데이터(객체)로 데이터 받기
+    직접 만든 객체를 반환한다.
+    그러면 JSON형식으로 변환되어 반환된다.
+    Hello hello = new Hello();
+    hello.setName(name);
+    return hello;
+
+    결과는 {'name' : "something"}
